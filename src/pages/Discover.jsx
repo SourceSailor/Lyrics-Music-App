@@ -7,7 +7,7 @@ const Discover = () => {
   const dispatch = useDispatch();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
   const genreTitle = "Pop";
-  const { data: discoverSongData, isFetching, error } = useGetTopChartsQuery();
+  const { data, isFetching, error } = useGetTopChartsQuery();
 
   if (isFetching) return <Loader title="Loading Songs..." />;
   if (error) return <Error />;
@@ -34,10 +34,10 @@ const Discover = () => {
 
       {/* Discover API Data Mapping */}
       <div className="flex flex-wrap sm:justify-start justify-center gap-8">
-        {discoverSongData?.map((song, i) => (
+        {data?.map((song, i) => (
           <SongCard
             key={i}
-            discoverSongData={discoverSongData}
+            data={data}
             song={song}
             i={i}
             isPlaying={isPlaying}

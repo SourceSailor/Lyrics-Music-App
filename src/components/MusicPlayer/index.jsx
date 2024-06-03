@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
 import {
   nextSong,
   prevSong,
@@ -13,13 +12,8 @@ import Track from "./Track";
 import VolumeBar from "./VolumeBar";
 
 const MusicPlayer = () => {
-  const {
-    activeSong,
-    currentSongs = [],
-    currentIndex,
-    isActive,
-    isPlaying,
-  } = useSelector((state) => state.player);
+  const { activeSong, currentSongs, currentIndex, isActive, isPlaying } =
+    useSelector((state) => state.player);
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
@@ -29,8 +23,15 @@ const MusicPlayer = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentSongs.length) dispatch(playPause(true));
-  }, [currentIndex]);
+    if (currentSongs && currentSongs.length) dispatch(playPause(true));
+  }, [currentIndex, currentSongs, dispatch]);
+
+  useEffect(() => {
+    const audioElement = document.getElementById("audio-player");
+    if (audioElement) {
+      audioElement.currentTime = seekTime;
+    }
+  }, [seekTime]);
 
   const handlePlayPause = () => {
     if (!isActive) return;
@@ -86,11 +87,12 @@ const MusicPlayer = () => {
           value={appTime}
           min="0"
           max={duration}
-          onInput={(event) => setSeekTime(event.target.value)}
+          onInput={(event) => setSeekTime(Number(event.target.value))}
           setSeekTime={setSeekTime}
           appTime={appTime}
         />
         <Player
+          id="audio-player"
           activeSong={activeSong}
           volume={volume}
           isPlaying={isPlaying}

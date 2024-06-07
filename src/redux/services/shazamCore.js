@@ -17,10 +17,23 @@ export const shazamCoreAPI = createApi({
     getTopCharts: builder.query({
       query: () => "/v1/charts/world?country_code=DZ",
     }),
+    getSongDataV1: builder.query({
+      query: ({ detailsHeaderId }) =>
+        `/v1/tracks/details?track_id=${detailsHeaderId}`,
+    }),
     getSongDetailsV2: builder.query({
       query: ({ songid }) => `/v2/tracks/details?track_id=${songid}`,
+    }),
+    getRelatedSongs: builder.query({
+      query: ({ relatedSongsId }) =>
+        `/v1/tracks/related?offset=0&track_id=${relatedSongsId}`,
     }),
   }),
 });
 
-export const { useGetTopChartsQuery, useGetSongDetailsV2Query } = shazamCoreAPI;
+export const {
+  useGetTopChartsQuery,
+  useGetSongDataV1Query,
+  useGetSongDetailsV2Query,
+  useGetRelatedSongsQuery,
+} = shazamCoreAPI;

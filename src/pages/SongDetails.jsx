@@ -10,6 +10,17 @@ const SongDetails = () => {
   const { activeSong, isPlaying } = useSelector((state) => state.player);
   const { data: songData } = useGetSongDetailsV2Query({ songid });
 
+  // Handle Pause Function
+  const handlePauseClick = () => {
+    dispatch(playPause(false));
+  };
+
+  // Handle Play Function
+  const handlePlayClick = (song, i) => {
+    dispatch(setActiveSong({ song, data, i }));
+    dispatch(playPause(true));
+  };
+
   // Extract Lyrics Key From Object
   const lyricsKey = Object.keys(songData?.resources?.lyrics || {})[0];
 
@@ -17,21 +28,35 @@ const SongDetails = () => {
 
   return (
     <div className="flex flex-col">
-      <DetailsHeader songData={songData} />
-      <div className="mb-10">
+      <DetailsHeader artistId="" songData={songData} />
+      <div className="mt-10 mb-3">
         <h2 className="text-white text-3xl font-bold">Lyrics:</h2>
       </div>
 
       {/* Song Lyrics */}
-      <div className="mt-5">
+      <div>
         {lyricsKey ? (
           songData?.resources?.lyrics[lyricsKey]?.attributes?.text.map(
-            (line, i) => <p key={i}>{line}</p>
+            (line, i) => (
+              <p className="text-white text-bold my-1" key={i}>
+                {line}
+              </p>
+            )
           )
         ) : (
-          <p>Sorry, No Lyrics</p>
+          <p className="text-white text-bold">Sorry, No Lyrics</p>
         )}
       </div>
+
+      {/* Related Songs Component */}
+      <RelatedSongs
+        songData={songData}
+        isPlaying={isPlaying}
+        activeSong={activeSong}
+        handlePauseClick={handlePauseClick}
+        handlePlayClick={handlePlayClick}
+        // handlePlayClick={() => handlePlayClick(song, i)}
+      />
     </div>
   );
 };

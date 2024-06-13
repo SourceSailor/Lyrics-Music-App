@@ -41,7 +41,7 @@ const TopChartCard = ({
           </Link>
 
           {/* Top Plays Song Artist */}
-          <Link to={`/songs/${song.attributes?.artistName}`}>
+          <Link to={`/artists/${song?.relationships?.artists?.data[0]?.id}`}>
             <p className="text-base text-gray-300 mt-1">
               {song?.attributes?.artistName}
             </p>

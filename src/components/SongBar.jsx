@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { useState, useEffect } from "react";
 import PlayPause from "./PlayPause";
+import { useGetSongDataV1Query } from "../redux/services/shazamCore";
 
 const SongBar = ({
   song,
@@ -12,7 +13,6 @@ const SongBar = ({
   handlePauseClick,
   handlePlayClick,
 }) => {
-  console.log(song);
   return (
     <div
       className={`w-full flex flex-row items-center hover:bg-[#4c426e] ${

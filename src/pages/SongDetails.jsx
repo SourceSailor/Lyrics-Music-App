@@ -1,14 +1,32 @@
 import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { DetailsHeader, Error, Loader, RelatedSongs } from "../components";
 import { setActiveSong, playPause } from "../redux/features/playerSlice";
 import { useGetSongDetailsV2Query } from "../redux/services/shazamCore";
 
-const SongDetails = () => {
+const SongDetails = ({ delay }) => {
   const dispatch = useDispatch();
   const { songid } = useParams();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
-  const { data: songData } = useGetSongDetailsV2Query({ songid });
+  // const { data: songData } = useGetSongDetailsV2Query({ songid });
+  const [delayed, setDelayed] = useState(false);
+
+  // Setting a Timeout to delayed state using a prop from Song Details
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDelayed(true);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  // Creating conditional logic, fetching the data from the API to execute after setDelayed and songid is truthy
+  const {
+    data: songData,
+    isFetching,
+    error,
+  } = useGetSongDetailsV2Query({ songid }, { skip: !delayed });
 
   // Handle Pause Function
   const handlePauseClick = () => {
@@ -17,7 +35,7 @@ const SongDetails = () => {
 
   // Handle Play Function
   const handlePlayClick = (song, i) => {
-    dispatch(setActiveSong({ song, data, i }));
+    dispatch(setActiveSong({ song, data: songData, i }));
     dispatch(playPause(true));
   };
 
@@ -25,6 +43,9 @@ const SongDetails = () => {
   const lyricsKey = Object.keys(songData?.resources?.lyrics || {})[0];
 
   console.log("Song Data From V2 API From Song Details Component: ", songData);
+
+  if (isFetching) return <Loader title="Loading song details..." />;
+  if (error) return <Error />;
 
   return (
     <div className="flex flex-col">
@@ -50,6 +71,7 @@ const SongDetails = () => {
 
       {/* Related Songs Component */}
       <RelatedSongs
+        delay={3000}
         songData={songData}
         isPlaying={isPlaying}
         activeSong={activeSong}

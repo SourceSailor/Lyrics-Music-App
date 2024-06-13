@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import PlayPause from "./PlayPause";
@@ -19,13 +19,6 @@ const TopChartCard = ({
   handlePauseClick,
   handlePlayClick,
 }) => {
-  // Top Charts Song Data Console Log
-
-  // console.log(
-  //   "Song Data Coming From Top Card Component In Top Play Component: ",
-  //   song
-  // );
-
   return (
     <div className="w-full flex flex-row items-center hover:bg-[#4c426e] py-2 p-4 rounded-lg cursor-pointer mb-2">
       {/* Number Count */}
@@ -68,18 +61,30 @@ const TopChartCard = ({
   );
 };
 
-const TopPlay = () => {
+const TopPlay = ({ delay }) => {
   const divRef = useRef(null);
   const dispatch = useDispatch();
-  const { data, error } = useGetTopChartsQuery();
+  const [delayed, setDelayed] = useState(false);
   const { activeSong, isPlaying } = useSelector((state) => state.player);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDelayed(true);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  const { data, isFetching, error } = useGetTopChartsQuery(null, {
+    skip: !delayed,
+  });
 
   // Scroll to the top of the page
   useEffect(() => {
     setTimeout(() => {
       divRef.current.scrollIntoView({ top: 0, behavior: "smooth" });
     }, 3000);
-  });
+  }, []);
 
   // Top 5 Songs Being Displayed
   const topPlays = data?.slice(0, 5);
@@ -94,6 +99,9 @@ const TopPlay = () => {
     dispatch(setActiveSong({ song, data, i }));
     dispatch(playPause(true));
   };
+
+  if (isFetching) return <div>Loading...</div>;
+  if (error) return <div>Error loading top charts</div>;
   return (
     <div
       ref={divRef}

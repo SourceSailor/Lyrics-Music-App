@@ -23,10 +23,12 @@ const ArtistDetails = ({ delay }) => {
     data: artistData,
     isFetching,
     error,
-  } = useGetArtistsDetailsQuery({ artistId }, { skip: !delayed });
+  } = useGetArtistsDetailsQuery(artistId, { skip: !delayed });
 
   if (isFetching) return <Loader title="Loading artist details..." />;
   if (error) return <Error />;
+
+  console.log("API Error: ", error);
 
   return (
     <div className="flex flex-col">

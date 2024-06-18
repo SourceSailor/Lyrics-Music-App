@@ -17,11 +17,6 @@ const SongCard = ({ data, i, song, isPlaying, activeSong }) => {
     dispatch(playPause(true));
   };
 
-  console.log(
-    "song Data Passed To Song Card Component From Discover Component: ",
-    song
-  );
-
   return (
     <div className="flex flex-col w-[250px] p-4 bg-white/5 bg-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer">
       {/* Song Card Hover Effect */}

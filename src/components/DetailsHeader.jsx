@@ -16,23 +16,39 @@ const DetailsHeader = ({ artistId, artistData, songData }) => {
 
   const artist = artistData?.artistName?.attributes;
 
+  // console.log(
+  //   "useGetSongDataV1Query API Call From Details Header Component: ",
+  //   songDataV1
+  // );
+
   console.log(
-    "useGetSongDataV1Query API Call From Details Header Component: ",
-    songDataV1
+    "Artist Data From The Details Header Component: ",
+    artistData?.data?.[0]
   );
+
+  const artistDataBoilerPlate = artistData?.data?.[0];
 
   return (
     <div className="relative w-full flex flex-col">
       <div className="w-full bg-gradient-to-l from-transpartent to-black sm:h-48 h-28 rounded-2xl " />
       <div className="absolute inset-0 flex items-center ml-2">
+        {/* Artist Image */}
         <img
           className="sm:w-40 w-28 sm:h-40 h:28 rounded-full object-cover border-2 shadow-xl"
-          src={artistId ? artist?.artwork?.url : songDataV1?.images?.coverart}
+          src={
+            artistId
+              ? artistDataBoilerPlate?.attributes?.artwork?.url
+              : songDataV1?.images?.coverart
+          }
           alt=""
         />
         <div className="ml-5">
+          {/* Artist Name */}
+
           <p className="font-bold sm:text-3xl text-xl text-white">
-            {artistId ? artist?.name : songDataV1?.title}
+            {artistId
+              ? artistDataBoilerPlate?.attributes?.name
+              : songDataV1?.title}
           </p>
           {!artistId && (
             <Link to={`/artists/${songDataV1?.artists}`}>
@@ -43,7 +59,9 @@ const DetailsHeader = ({ artistId, artistData, songData }) => {
           )}
 
           <p className="text-base text-gray-400 mt-2">
-            {artistId ? artist?.genreNames[0] : songDataV1?.genres?.primary}
+            {artistId
+              ? artistDataBoilerPlate?.attributes?.genreNames
+              : songDataV1?.genres?.primary}
           </p>
         </div>
       </div>

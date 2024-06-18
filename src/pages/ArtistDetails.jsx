@@ -27,14 +27,21 @@ const ArtistDetails = ({ delay }) => {
 
   if (isFetching) return <Loader title="Loading artist details..." />;
   if (error) return <Error />;
+  const artistDataBoilerPlate = artistData?.data?.[0];
 
-  console.log("API Error: ", error);
+  console.log(
+    "Artist Data From Artist Details Component: ",
+    artistDataBoilerPlate
+  );
 
   return (
     <div className="flex flex-col">
       <DetailsHeader artistId={artistId} artistData={artistData} />
       <div className="mt-10 mb-3">
-        <h2 className="text-white text-3xl font-bold">Lyrics:</h2>
+        <h2 className="text-white text-3xl font-bold">Bio:</h2>
+        <p className="text-white text-lg my-5">
+          {artistDataBoilerPlate?.attributes?.artistBio}
+        </p>
       </div>
 
       {/* Related Songs Component */}

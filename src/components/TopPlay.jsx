@@ -9,6 +9,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper";
 import "swiper/css";
 import "swiper/css/free-mode";
+import Loader from "./Loader";
 
 // Top Charts Card Component
 const TopChartCard = ({
@@ -61,6 +62,7 @@ const TopChartCard = ({
   );
 };
 
+// Top Play Component
 const TopPlay = ({ delay }) => {
   const divRef = useRef(null);
   const dispatch = useDispatch();
@@ -100,8 +102,10 @@ const TopPlay = ({ delay }) => {
     dispatch(playPause(true));
   };
 
-  if (isFetching) return <div>Loading...</div>;
-  if (error) return <div>Error loading top charts</div>;
+  if (isFetching) return <Loader title="Loading top charts..." />;
+  if (error) return <Error />;
+
+  // Top Play Component Return
   return (
     <div
       ref={divRef}

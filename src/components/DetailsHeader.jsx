@@ -21,10 +21,10 @@ const DetailsHeader = ({ artistId, artistData, songData }) => {
   //   songDataV1
   // );
 
-  console.log(
-    "Artist Data From The Details Header Component: ",
-    artistData?.data?.[0]
-  );
+  // console.log(
+  //   "Artist Data From The Details Header Component: ",
+  //   artistData?.data?.[0]
+  // );
 
   const artistDataBoilerPlate = artistData?.data?.[0];
 
@@ -58,10 +58,16 @@ const DetailsHeader = ({ artistId, artistData, songData }) => {
             </Link>
           )}
 
-          <p className="text-base text-gray-400 mt-2">
+          {/* Genre */}
+          <p className="font-bold text-gray-100 mt-2">
             {artistId
               ? artistDataBoilerPlate?.attributes?.genreNames
               : songDataV1?.genres?.primary}
+          </p>
+
+          {/* Born */}
+          <p className="text-base text-gray-400 mt-2">
+            {artistId && artistDataBoilerPlate?.attributes?.origin}
           </p>
         </div>
       </div>

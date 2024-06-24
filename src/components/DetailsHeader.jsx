@@ -16,15 +16,15 @@ const DetailsHeader = ({ artistId, artistData, songData }) => {
 
   const artist = artistData?.artistName?.attributes;
 
-  // console.log(
-  //   "useGetSongDataV1Query API Call From Details Header Component: ",
-  //   songDataV1
-  // );
+  console.log(
+    "useGetSongDataV1Query API Call From Details Header Component: ",
+    songDataV1
+  );
 
-  // console.log(
-  //   "Artist Data From The Details Header Component: ",
-  //   artistData?.data?.[0]
-  // );
+  console.log(
+    "Artist Data From The Details Header Component: ",
+    artistData?.data?.[0]
+  );
 
   const artistDataBoilerPlate = artistData?.data?.[0];
 
@@ -51,7 +51,7 @@ const DetailsHeader = ({ artistId, artistData, songData }) => {
               : songDataV1?.title}
           </p>
           {!artistId && (
-            <Link to={`/artists/${songDataV1?.artists}`}>
+            <Link to={`/artists/${songDataV1?.artists[0]?.adamid}`}>
               <p className="text-base text-gray-400 mt-2">
                 {songDataV1?.subtitle}
               </p>

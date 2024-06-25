@@ -1,13 +1,34 @@
 import { Error, Loader, SongCard } from "../components";
 import { genres } from "../assets/constants";
-import { useGetTopChartsQuery } from "../redux/services/shazamCore";
+import { useGetSongsByGenreQuery } from "../redux/services/shazamCore";
 import { useDispatch, useSelector } from "react-redux";
+import { selectGenreListId } from "../redux/features/playerSlice";
+import { useState, useEffect } from "react";
 
 const Discover = () => {
   const dispatch = useDispatch();
-  const { activeSong, isPlaying } = useSelector((state) => state.player);
-  const genreTitle = "Pop";
-  const { data, isFetching, error } = useGetTopChartsQuery();
+  const [delayComplete, setDelayComplete] = useState(false);
+  const { activeSong, isPlaying, genreListId } = useSelector(
+    (state) => state.player
+  );
+  const genreTitle =
+    genres.find((genre) => genre.value === genreListId)?.title || "Pop";
+
+  // Fetching data after delay
+  const { data, isFetching, error } = useGetSongsByGenreQuery(
+    genreListId || "POP",
+    {
+      skip: !delayComplete,
+    }
+  );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDelayComplete(true);
+    }, 2000); // setting a 2-second delay
+
+    return () => clearTimeout(timer);
+  }, []);
 
   if (isFetching) return <Loader title="Loading Songs..." />;
   if (error) return <Error />;
@@ -19,10 +40,11 @@ const Discover = () => {
 
         {/* Genre Selector */}
         <select
-          name=""
-          id=""
-          className="bg-black text-gray-300 text-sm rounded-lg outline-none -mt-0 sm:mt-5 py-2 px-2"
-          onChange={() => {}}
+          name="genres"
+          id="genres"
+          value={genreListId || "Pop"}
+          className="bg-black text-gray-300 text-sm rounded-lg outline-none sm:mt-5 py-2 px-2"
+          onChange={(e) => dispatch(selectGenreListId(e.target.value))}
         >
           {genres.map((genre, i) => (
             <option key={i} value={genre.value}>

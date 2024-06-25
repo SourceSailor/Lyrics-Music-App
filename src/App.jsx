@@ -25,7 +25,7 @@ const App = () => {
           <div className="flex-1 h-fit pb-40">
             <Routes>
               {/* DISCOVER */}
-              <Route path="/" element={<Discover />} />
+              <Route path="/" element={<Discover delay={1500} />} />
 
               {/* TOP ARTISTS */}
               <Route path="/top-artists" element={<TopArtists />} />

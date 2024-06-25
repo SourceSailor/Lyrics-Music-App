@@ -1,5 +1,6 @@
 import SongBar from "./SongBar";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Error, Loader } from "../components";
 import { useGetRelatedSongsQuery } from "../redux/services/shazamCore";
 
@@ -13,6 +14,7 @@ const RelatedSongs = ({
 }) => {
   const relatedSongsId = songData?.data[0]?.id;
   const [delayed, setDelayed] = useState(false);
+  const dispatch = useDispatch();
 
   // Setting a Timeout to delayed state using a prop from Song Details
   useEffect(() => {
@@ -44,7 +46,15 @@ const RelatedSongs = ({
       {/* Mapping relatedSongsData to Song Bar */}
       <div className="mt-6 w-full flex flex-col">
         {relatedSongData?.map((song, i) => (
-          <SongBar key={i} song={song} i={i} />
+          <SongBar
+            key={i}
+            song={song}
+            i={i}
+            isPlaying={isPlaying}
+            activeSong={activeSong}
+            handlePauseClick={handlePauseClick}
+            handlePlayClick={() => handlePlayClick(song, i)}
+          />
         ))}
       </div>
     </div>

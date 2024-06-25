@@ -65,7 +65,7 @@ const SongDetails = ({ delay }) => {
             )
           )
         ) : (
-          <p className="text-white text-bold">Sorry, No Lyrics</p>
+          <p className="text-white text-bold">Sorry, No Lyrics Found</p>
         )}
       </div>
 

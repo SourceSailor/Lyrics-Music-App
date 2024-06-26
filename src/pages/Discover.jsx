@@ -30,7 +30,7 @@ const Discover = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  if (isFetching) return <Loader title="Loading Songs..." />;
+  if (isFetching) return <Loader title={`Loading ${genreTitle} Songs...`} />;
   if (error) return <Error />;
 
   return (

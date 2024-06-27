@@ -69,6 +69,7 @@ const TopPlay = ({ delay }) => {
   const [delayed, setDelayed] = useState(false);
   const { activeSong, isPlaying } = useSelector((state) => state.player);
 
+  // Set Delay for API
   useEffect(() => {
     const timer = setTimeout(() => {
       setDelayed(true);

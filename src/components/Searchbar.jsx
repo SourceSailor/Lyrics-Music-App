@@ -13,7 +13,6 @@ const Searchbar = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      action=""
       autoComplete="off"
       className="p-2 text-gray-400 focus-within:text-gray-600"
     >

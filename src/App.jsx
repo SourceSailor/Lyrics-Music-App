@@ -54,7 +54,10 @@ const App = () => {
               />
 
               {/* SEARCH */}
-              <Route path="/search/:searchTerm" element={<Search />} />
+              <Route
+                path="/search/:searchTerm"
+                element={<Search delay={1500} />}
+              />
             </Routes>
           </div>
           <div className="xl:sticky relative top-0 h-fit">

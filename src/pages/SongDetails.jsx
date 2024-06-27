@@ -77,7 +77,6 @@ const SongDetails = ({ delay }) => {
         activeSong={activeSong}
         handlePauseClick={handlePauseClick}
         handlePlayClick={handlePlayClick}
-        // handlePlayClick={() => handlePlayClick(song, i)}
       />
     </div>
   );

@@ -2,6 +2,7 @@ import SongBar from "./SongBar";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Error, Loader } from "../components";
+import { playPause, setActiveSong } from "../redux/features/playerSlice";
 import { useGetRelatedSongsQuery } from "../redux/services/shazamCore";
 
 const RelatedSongs = ({
@@ -16,7 +17,6 @@ const RelatedSongs = ({
   const [delayed, setDelayed] = useState(false);
   const dispatch = useDispatch();
 
-  // Setting a Timeout to delayed state using a prop from Song Details
   useEffect(() => {
     const timer = setTimeout(() => {
       setDelayed(true);
@@ -25,7 +25,6 @@ const RelatedSongs = ({
     return () => clearTimeout(timer);
   }, [delay]);
 
-  // Creating conditional logic, fetching the data from the API to execute after setDelayed and relatedSongsId is truthy
   const {
     data: relatedSongData,
     isFetching,
@@ -35,7 +34,6 @@ const RelatedSongs = ({
     { skip: !delayed || !relatedSongsId }
   );
 
-  // Fetching and Error Handeling
   if (isFetching) return <Loader title="Loading Related Songs..." />;
   if (error) return <Error />;
 
@@ -43,7 +41,6 @@ const RelatedSongs = ({
     <div className="flex flex-col mt-10">
       <h1 className="font-bold text-3xl text-white">Related Songs</h1>
 
-      {/* Mapping relatedSongsData to Song Bar */}
       <div className="mt-6 w-full flex flex-col">
         {relatedSongData?.map((song, i) => (
           <SongBar

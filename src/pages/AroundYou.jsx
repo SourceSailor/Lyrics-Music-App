@@ -27,9 +27,8 @@ const AroundYou = () => {
       .finally(() => setLoading(false));
   }, [country]);
 
-  if (isFetching && loading)
-    return <Loader title="Loading songs around you..." />;
-  if (error && country) return <Error />;
+  if (isFetching) return <Loader title="Loading songs around you..." />;
+  if (error) return <Error />;
 
   return (
     <div className="flex flex-col">

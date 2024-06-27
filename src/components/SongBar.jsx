@@ -1,7 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import PlayPause from "./PlayPause";
+import { playPause, setActiveSong } from "../redux/features/playerSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 import { useGetSongDataV1Query } from "../redux/services/shazamCore";
 
 const SongBar = ({
@@ -52,8 +55,8 @@ const SongBar = ({
           isPlaying={isPlaying}
           activeSong={activeSong}
           song={song}
-          handlePauseClick={handlePauseClick}
-          handlePlayClick={handlePlayClick}
+          handlePause={handlePauseClick}
+          handlePlay={handlePlayClick}
         />
       ) : null}
     </div>

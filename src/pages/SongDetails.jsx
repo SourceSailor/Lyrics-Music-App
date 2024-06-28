@@ -35,7 +35,7 @@ const SongDetails = ({ delay }) => {
 
   // Handle Play Function
   const handlePlayClick = (song, i) => {
-    dispatch(setActiveSong({ song, data: songData, i }));
+    dispatch(setActiveSong({ song, data: songData?.data, i }));
     dispatch(playPause(true));
   };
 

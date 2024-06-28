@@ -1,5 +1,5 @@
+import React from "react";
 import SongBar from "./SongBar";
-import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Error, Loader } from "../components";
 import { playPause, setActiveSong } from "../redux/features/playerSlice";
@@ -11,28 +11,20 @@ const RelatedSongs = ({
   isPlaying,
   activeSong,
   handlePauseClick,
-  handlePlayClick,
 }) => {
   const relatedSongsId = songData?.data[0]?.id;
-  const [delayed, setDelayed] = useState(false);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDelayed(true);
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [delay]);
 
   const {
     data: relatedSongData,
     isFetching,
     error,
-  } = useGetRelatedSongsQuery(
-    { relatedSongsId },
-    { skip: !delayed || !relatedSongsId }
-  );
+  } = useGetRelatedSongsQuery({ relatedSongsId }, { skip: !relatedSongsId });
+
+  const handlePlayClick = (song, i) => {
+    dispatch(setActiveSong({ song, data: relatedSongData, i }));
+    dispatch(playPause(true));
+  };
 
   if (isFetching) return <Loader title="Loading Related Songs..." />;
   if (error) return <Error />;
@@ -44,13 +36,13 @@ const RelatedSongs = ({
       <div className="mt-6 w-full flex flex-col">
         {relatedSongData?.map((song, i) => (
           <SongBar
-            key={i}
+            key={`${song.id}-${i}`}
             song={song}
             i={i}
             isPlaying={isPlaying}
             activeSong={activeSong}
             handlePauseClick={handlePauseClick}
-            handlePlayClick={() => handlePlayClick(song, i)}
+            handlePlayClick={handlePlayClick}
           />
         ))}
       </div>

@@ -16,6 +16,8 @@ const SongBar = ({
   handlePauseClick,
   handlePlayClick,
 }) => {
+  const relatedSongId1 = song?.hub?.actions?.[0]?.id;
+
   return (
     <div
       className={`w-full flex flex-row items-center hover:bg-[#4c426e] ${
@@ -37,7 +39,13 @@ const SongBar = ({
         />
         <div className="flex-1 flex flex-col justify-center mx-3">
           {!artistId ? (
-            <Link to={`/songs/${song?.id}`}>
+            <Link
+              to={
+                !relatedSongId1
+                  ? `/songs/${song?.hub?.actions?.id}`
+                  : `/songs/${song?.hub?.actions[0]?.id}`
+              }
+            >
               <p className="text-xl font-bold text-white">{song?.title}</p>
             </Link>
           ) : (

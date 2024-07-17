@@ -9,8 +9,11 @@ const SongDetails = ({ delay }) => {
   const dispatch = useDispatch();
   const { songid } = useParams();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
-  // const { data: songData } = useGetSongDetailsV2Query({ songid });
   const [delayed, setDelayed] = useState(false);
+  const [headerRendered, setHeaderRendered] = useState(false);
+  const onHeaderRendered = () => {
+    setHeaderRendered(true);
+  };
 
   // Setting a Timeout to delayed state using a prop from Song Details
   useEffect(() => {
@@ -21,7 +24,6 @@ const SongDetails = ({ delay }) => {
     return () => clearTimeout(timer);
   }, [delay]);
 
-  // Creating conditional logic, fetching the data from the API to execute after setDelayed and songid is truthy
   const {
     data: songData,
     isFetching,
@@ -42,14 +44,20 @@ const SongDetails = ({ delay }) => {
   // Extract Lyrics Key From Object
   const lyricsKey = Object.keys(songData?.resources?.lyrics || {})[0];
 
-  console.log("Song Data From V2 API From Song Details Component: ", songData);
-
   if (isFetching) return <Loader title="Loading song details..." />;
-  if (error) return <Error />;
+  if (error) {
+    console.log("Song Details Error: ", error);
+    return <Error />;
+  }
 
   return (
     <div className="flex flex-col">
-      <DetailsHeader artistId="" songData={songData} />
+      <DetailsHeader
+        artistId=""
+        delay={1000}
+        songData={songData}
+        onHeaderRendered={onHeaderRendered}
+      />
       <div className="mt-10 mb-3">
         <h2 className="text-white text-3xl font-bold">Lyrics:</h2>
       </div>
@@ -70,14 +78,15 @@ const SongDetails = ({ delay }) => {
       </div>
 
       {/* Related Songs Component */}
-      <RelatedSongs
-        delay={3000}
-        songData={songData}
-        isPlaying={isPlaying}
-        activeSong={activeSong}
-        handlePauseClick={handlePauseClick}
-        handlePlayClick={handlePlayClick}
-      />
+      {headerRendered && (
+        <RelatedSongs
+          songData={songData}
+          isPlaying={isPlaying}
+          activeSong={activeSong}
+          handlePauseClick={handlePauseClick}
+          handlePlayClick={handlePlayClick}
+        />
+      )}
     </div>
   );
 };

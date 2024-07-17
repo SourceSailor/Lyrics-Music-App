@@ -50,7 +50,7 @@ const App = () => {
               {/* SONG DETAILS */}
               <Route
                 path="/songs/:songid"
-                element={<SongDetails delay={2000} />}
+                element={<SongDetails delay={1000} />}
               />
 
               {/* SEARCH */}

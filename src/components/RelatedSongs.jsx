@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 import { Error, Loader } from "../components";
 import { playPause, setActiveSong } from "../redux/features/playerSlice";
 import { useGetRelatedSongsQuery } from "../redux/services/shazamCore";
+import { useState, useEffect } from "react";
 
 const RelatedSongs = ({
-  delay,
   songData,
   isPlaying,
   activeSong,
@@ -27,7 +27,10 @@ const RelatedSongs = ({
   };
 
   if (isFetching) return <Loader title="Loading Related Songs..." />;
-  if (error) return <Error />;
+  if (error) {
+    console.log("Related Songs Error: ", error);
+    return <Error />;
+  }
 
   return (
     <div className="flex flex-col mt-10">

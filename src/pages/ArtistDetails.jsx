@@ -52,7 +52,10 @@ const ArtistDetails = ({ delay }) => {
 
   // API Fetching and Error Handling
   if (isFetching) return <Loader title="Loading artist details..." />;
-  if (error) return <Error />;
+  if (error) {
+    console.log("Artists Details Error: ", error);
+    return <Error />;
+  }
 
   // Artist Data Boilerplate Variables
   const artistDataBoilerPlate = artistData?.data?.[0];

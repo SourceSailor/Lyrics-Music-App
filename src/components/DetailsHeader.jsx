@@ -1,32 +1,55 @@
 import { Link } from "react-router-dom";
 import { useGetSongDataV1Query } from "../redux/services/shazamCore";
+import { delay } from "lodash";
+import { useEffect, useState } from "react";
+import { Error, Loader } from "../components";
 
-const DetailsHeader = ({ artistId, artistData, songData }) => {
-  // Song Data Being Fetched From V1 Query
+const DetailsHeader = ({
+  artistId,
+  artistData,
+  songData,
+  delay,
+  onHeaderRendered,
+}) => {
   const detailsHeaderId = songData?.data[0]?.id;
-  const { data: songDataV1 } = useGetSongDataV1Query(
+  const [delayed, setDelayed] = useState(false);
+
+  // Delay API Response
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDelayed(true);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  const {
+    data: songDataV1,
+    isFetching,
+    error,
+  } = useGetSongDataV1Query(
     { detailsHeaderId },
     {
-      skip: !detailsHeaderId,
-    },
-    {
-      retry: 3, // Retry up to 3 times in case of failure
+      skip: !detailsHeaderId || !delayed,
     }
   );
 
+  useEffect(() => {
+    if (!isFetching && !error && songDataV1) {
+      onHeaderRendered();
+    }
+  }, [isFetching, error, songDataV1, artistData, onHeaderRendered]);
+
+  if (isFetching) return <Loader title="Loading song details..." />;
+  if (error) {
+    console.log("Song Details Error: ", error);
+    return <Error />;
+  }
+
   const artist = artistData?.artistName?.attributes;
-
-  // console.log(
-  //   "useGetSongDataV1Query API Call From Details Header Component: ",
-  //   songDataV1
-  // );
-
-  // console.log(
-  //   "Artist Data From The Details Header Component: ",
-  //   artistData?.data?.[0]
-  // );
-
   const artistDataBoilerPlate = artistData?.data?.[0];
+
+  console.log("Details Header Song Data: ", songDataV1);
 
   return (
     <div className="relative w-full flex flex-col">

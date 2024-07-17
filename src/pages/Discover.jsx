@@ -31,7 +31,10 @@ const Discover = () => {
   }, []);
 
   if (isFetching) return <Loader title={`Loading ${genreTitle} Songs...`} />;
-  if (error) return <Error />;
+  if (error) {
+    console.log("Discover Songs Error: ", error);
+    return <Error />;
+  }
 
   return (
     <div className="flex flex-col">

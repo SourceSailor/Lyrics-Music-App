@@ -26,8 +26,7 @@ const playerSlice = createSlice({
 
       state.currentIndex = action.payload.i;
       state.isActive = true;
-        state.isPlaying = true; // Add this line to ensure the song starts playing when selected
-
+      state.isPlaying = true; // Add this line to ensure the song starts playing when selected
     },
 
     nextSong: (state, action) => {

@@ -64,6 +64,23 @@ const ArtistDetails = ({ delay }) => {
   const relatedArtistsDataBoilerPlate =
     artistData?.data?.[0]?.views["similar-artists"]?.data;
 
+  const parseItalicText = (text) => {
+    const parts = text.split(/(<I>|<\/I>|<i>|<\/i>|\*)/);
+    let isItalic = false;
+
+    return parts.map((part, index) => {
+      if (part === "<I>" || part === "<i>" || part === "*") {
+        isItalic = !isItalic;
+        return null;
+      } else if (part === "</I>" || part === "</i>") {
+        isItalic = false;
+        return null;
+      } else {
+        return isItalic ? <i key={index}>{part}</i> : part;
+      }
+    });
+  };
+
   return (
     <div className="flex flex-col">
       {/* Artist Details Header */}
@@ -74,7 +91,7 @@ const ArtistDetails = ({ delay }) => {
         <h2 className="text-white text-3xl font-bold">Bio:</h2>
         {artistDataBoilerPlate?.attributes?.artistBio ? (
           <p className="text-white text-lg my-5">
-            {artistDataBoilerPlate?.attributes?.artistBio}
+            {parseItalicText(artistDataBoilerPlate.attributes.artistBio)}
           </p>
         ) : (
           <p className="text-white text-xl mt-5">Sorry, no bio found...</p>
@@ -100,14 +117,15 @@ const ArtistDetails = ({ delay }) => {
               style={{ width: "20%", height: "auto" }}
               className="shadow-lg rounded-full animate-slideright"
             >
-              <div className="flex flex-col flex-col-reverse">
+              <div className="relative group">
                 <p
                   style={{ textShadow: "black 2px 3px" }}
-                  className="absolute text-xl font-bold text-white pl-3 pb-3"
+                  className="absolute bottom-0 left-0 text-xl font-bold text-white pl-3 pb-3 z-10 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
                 >
                   {artist?.attributes?.name}
                 </p>
-                <Link to={`/artists/${artist?.id}`}>
+                <Link to={`/artists/${artist?.id}`} className="block">
+                  <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300 ease-in-out"></div>
                   <img
                     className="rounded-2xl w-full object-cover"
                     src={artist?.attributes?.artwork?.url}

@@ -44,7 +44,7 @@ const SongDetails = ({ delay }) => {
   // Extract Lyrics Key From Object
   const lyricsKey = Object.keys(songData?.resources?.lyrics || {})[0];
 
-  if (isFetching) return <Loader title="Loading song details..." />;
+  if (isFetching) return <Loader title="Loading song..." />;
   if (error) {
     console.log("Song Details Error: ", error);
     return <Error />;

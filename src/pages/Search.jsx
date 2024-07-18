@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { Error, Loader, SongCard } from "../components";
 import PlayPause from "../components/PlayPause";
-import { playPause, setActiveSong } from "../redux/features/playerSlice";
 import { useGetSongsBySearchQuery } from "../redux/services/shazamCore";
 
 // Searched Card Component
@@ -17,7 +16,6 @@ const SearchCard = ({
   handlePauseClick,
   handlePlayClick,
 }) => {
-  // console.log("song passed through search card: ", song);
   return (
     <div className="flex flex-col w-[250px] p-4 bg-white/5 bg-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer">
       {/* Song Card Hover Effect */}
